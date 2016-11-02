@@ -1,4 +1,4 @@
-package com.devopsbuddy.controllers;
+package com.devopsbuddy.web.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-public class HelloController {
+public class indexController {
 
     @RequestMapping("/")
-    public String sayHello(){
+    public String home(){
         return "index";
     }
-
 }
