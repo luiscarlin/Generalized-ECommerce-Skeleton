@@ -3,14 +3,14 @@ package com.devopsbuddy.utils;
 import com.devopsbuddy.backend.persistence.domain.backend.User;
 
 /**
- * Created by andrewburns on 11/9/16.
+ * Created by andrewb
  */
-public class UsersUtils {
+public class UserUtils {
 
     /**
      * Non instantiable.
      */
-    private UsersUtils() {
+    private UserUtils() {
         throw new AssertionError("Non instantiable");
     }
 
