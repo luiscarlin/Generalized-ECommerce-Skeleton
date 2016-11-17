@@ -55,6 +55,7 @@ public class DevopsbuddyApplication implements CommandLineRunner{
 		LOG.debug("Creating user with username {}", user.getUsername());
 		userService.createUser(user, PlansEnum.PRO, userRoles);
 		LOG.info("User {} created", user.getUsername());
+		LOG.info("Email {} created", user.getEmail());
 
 	}
 }
