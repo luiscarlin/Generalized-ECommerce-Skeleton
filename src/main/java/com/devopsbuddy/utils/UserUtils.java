@@ -2,7 +2,7 @@ package com.devopsbuddy.utils;
 
 import com.devopsbuddy.backend.persistence.domain.backend.User;
 import com.devopsbuddy.web.controllers.ForgotMyPasswordController;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by andrewb
@@ -44,7 +44,6 @@ public class UserUtils {
                         request.getServerName() +
                         ":" +
                         request.getServerPort() +
-                        "/" +
                         request.getContextPath() +
                         ForgotMyPasswordController.CHANGE_PASSWORD_PATH +
                         "?id=" +
@@ -54,4 +53,5 @@ public class UserUtils {
 
         return passwordResetUrl;
     }
+
 }
