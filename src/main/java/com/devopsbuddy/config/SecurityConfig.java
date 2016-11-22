@@ -1,7 +1,9 @@
 package com.devopsbuddy.config;
 
 import com.devopsbuddy.backend.service.UserSecurityService;
+import com.devopsbuddy.web.controllers.ForgotMyPasswordController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,16 +29,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserSecurityService userSecurityService;
 
+
     @Autowired
     private Environment env;
 //
-//    /** The encryption SALT. */
-//    private static final String SALT = "fdalkjalk;3jlwf00sfaof";
-//
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(12, new SecureRandom(SALT.getBytes()));
-//    }
+    /** The encryption SALT. */
+    private static final String SALT = "fdalkjalk;3jlwf00sfaof";
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10, new SecureRandom(SALT.getBytes()));
+    }
 
 
     /** Public URLs. */
@@ -49,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/contact/**",
             "/error/**/*",
             "/console/**",
-            //ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING,
-            //ForgotMyPasswordController.CHANGE_PASSWORD_PATH,
+            ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING,
+            ForgotMyPasswordController.CHANGE_PASSWORD_PATH,
             //SignupController.SIGNUP_URL_MAPPING
     };
 
@@ -77,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userSecurityService);
+                .userDetailsService(userSecurityService)
+                .passwordEncoder(passwordEncoder());
     }
 }

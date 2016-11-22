@@ -13,7 +13,9 @@ import com.devopsbuddy.enums.RolesEnum;
 import com.devopsbuddy.utils.UserUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by andrewburns on 11/8/16.
@@ -28,18 +31,11 @@ import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = DevopsbuddyApplication.class)
-public class RepositoriesIntegrationTest {
-
-    @Autowired
-    private PlanRepository planRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+public class UserRepositoryIntegrationTest extends AbstractIntegrationTest{
 
 
+
+    @Rule public TestName testName = new TestName();
 
 
     @Before
@@ -70,7 +66,10 @@ public class RepositoriesIntegrationTest {
     @Test
     public void createNewUser() throws Exception {
 
-        User basicUser = createUser();
+        String username = testName.getMethodName();
+        String email = testName.getMethodName() + "@devopsbuddy.com";
+
+        User basicUser = createUser(username, email);
 
         User newlyCreatedUser = userRepository.findOne(basicUser.getId());
         Assert.assertNotNull(newlyCreatedUser);
@@ -87,38 +86,40 @@ public class RepositoriesIntegrationTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        User basicUser = createUser();
+
+        String username = testName.getMethodName();
+        String email = testName.getMethodName() + "@devopsbuddy.com";
+
+        User basicUser = createUser(username, email);
         userRepository.delete(basicUser.getId());
     }
 
-    //-----------------> Private methods
+    @Test
+    public void testGetUserByEmail() throws Exception {
+        User user = createUser(testName);
 
-    private Plan createPlan(PlansEnum plansEnum) {
-        return new Plan(plansEnum);
+        User newlyFoundUser = userRepository.findByEmail(user.getEmail());
+        Assert.assertNotNull(newlyFoundUser);
+        Assert.assertNotNull(newlyFoundUser.getId());
     }
 
-    private Role createRole(RolesEnum rolesEnum) {
-        return new Role(rolesEnum);
+    @Test
+    public void testUpdateUserPassword() throws Exception {
+        User user = createUser(testName);
+        Assert.assertNotNull(user);
+        Assert.assertNotNull(user.getId());
+
+        String newPassword = UUID.randomUUID().toString();
+
+        userRepository.updateUserPassword(user.getId(), newPassword);
+
+        user = userRepository.findOne(user.getId());
+        Assert.assertEquals(newPassword, user.getPassword());
+
     }
 
-    private User createUser() {
-        Plan basicPlan = createPlan(PlansEnum.BASIC);
-        planRepository.save(basicPlan);
 
-        User basicUser = UserUtils.createBasicUser();
-        basicUser.setPlan(basicPlan);
 
-        Role basicRole = createRole(RolesEnum.BASIC);
-        roleRepository.save(basicRole);
-
-        Set<UserRole> userRoles = new HashSet<>();
-        UserRole userRole = new UserRole(basicUser, basicRole);
-        userRoles.add(userRole);
-
-        basicUser.getUserRoles().addAll(userRoles);
-        basicUser = userRepository.save(basicUser);
-        return basicUser;
-    }
 
 
 

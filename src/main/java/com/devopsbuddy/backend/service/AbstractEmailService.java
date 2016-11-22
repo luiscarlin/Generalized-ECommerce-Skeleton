@@ -11,15 +11,19 @@ public abstract class AbstractEmailService implements EmailService {
 
     @Value("${default.to.address}")
     private String defaultToAddress;
-
-    protected SimpleMailMessage prepareSimpleMailMessageFromFeedbackPojo(FeedbackPojo feedback){
+    /**
+     * Creates a Simple Mail Message from a Feedback Pojo.
+     * @param feedback The Feedback pojo
+     * @return
+     */
+    protected SimpleMailMessage prepareSimpleMailMessageFromFeedbackPojo(FeedbackPojo feedback) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(defaultToAddress);
         message.setFrom(feedback.getEmail());
-        message.setSubject("[DevOps Buddy] Feedback received from " + feedback.getFirstName() + " " + feedback.getLastName() + "!");
+        message.setSubject("[DevOps Buddy]: Feedback received from " + feedback.getFirstName() + " " + feedback
+                .getLastName() + "!");
         message.setText(feedback.getFeedback());
-
-        return message; //fix later
+        return message;
     }
 
     @Override

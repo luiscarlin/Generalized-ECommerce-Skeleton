@@ -11,7 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
  */
 public class SmtpEmailService extends AbstractEmailService {
 
-    /** The Application Logger */
+    /** The application logger */
     private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
 
     @Autowired
@@ -19,7 +19,7 @@ public class SmtpEmailService extends AbstractEmailService {
 
     @Override
     public void sendGenericEmailMessage(SimpleMailMessage message) {
-        LOG.debug("Sending email for : {}", message);
+        LOG.debug("Sending email for: {}", message);
         mailSender.send(message);
         LOG.info("Email sent.");
     }

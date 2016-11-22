@@ -1,6 +1,8 @@
 package com.devopsbuddy.utils;
 
 import com.devopsbuddy.backend.persistence.domain.backend.User;
+import com.devopsbuddy.web.controllers.ForgotMyPasswordController;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by andrewb
@@ -18,12 +20,12 @@ public class UserUtils {
      * Creates a user with basic attributes set.
      * @return A User entity
      */
-    public static User createBasicUser() {
+    public static User createBasicUser(String username, String email) {
 
         User user = new User();
-        user.setUsername("basicUser");
+        user.setUsername(username);
         user.setPassword("secret");
-        user.setEmail("me@example.com");
+        user.setEmail(email);
         user.setFirstName("firstName");
         user.setLastName("lastName");
         user.setPhoneNumber("123456789123");
@@ -34,4 +36,22 @@ public class UserUtils {
 
         return user;
     }
+
+    public static String createPasswordResetUrl(HttpServletRequest request, long userId, String token) {
+        String passwordResetUrl =
+                request.getScheme() +
+                        "://" +
+                        request.getServerName() +
+                        ":" +
+                        request.getServerPort() +
+                        request.getContextPath() +
+                        ForgotMyPasswordController.CHANGE_PASSWORD_PATH +
+                        "?id=" +
+                        userId +
+                        "&token=" +
+                        token;
+
+        return passwordResetUrl;
+    }
+
 }

@@ -25,10 +25,12 @@ public class User implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 
     @Column(name = "first_name")
@@ -60,6 +62,21 @@ public class User implements Serializable, UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "user"
+    )
+    private Set<PasswordResetToken> passwordResetTokens = new HashSet<>();
+
+    public Set<PasswordResetToken> getPasswordResetTokens() {
+        return passwordResetTokens;
+    }
+
+    public void setPasswordResetTokens(Set<PasswordResetToken> passwordResetTokens) {
+        this.passwordResetTokens = passwordResetTokens;
+    }
 
 
     public long getId() {
