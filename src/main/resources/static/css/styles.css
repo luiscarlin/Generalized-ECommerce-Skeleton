@@ -1,5 +1,11 @@
 body {
-    padding-top: 60px;
+    padding-top: 120px;
+
+    /* Courtesy of uigradients.com */
+    background: #085078; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #085078 , #85D8CE); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #085078 , #85D8CE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .starter-template {
@@ -7,6 +13,10 @@ body {
     text-align: center;
 }
 
+/*-------------------------------------------------------
+ *  Courtesy of the Carousel Bootstrap example at:
+ *  https://getbootstrap.com/2.3.2/examples/carousel.html
+ *-------------------------------------------------------/
 /* MARKETING CONTENT
     -------------------------------------------------- */
 
@@ -56,7 +66,10 @@ body {
     letter-spacing: -1px;
 }
 
-/* registration page */
+/*-------------------------------------------------------
+ *  Signup form
+ *-------------------------------------------------------/
+ /** Registration page */
 .fieldError {
-    border: 2px solid red;
+    border : 2px solid red;
 }
